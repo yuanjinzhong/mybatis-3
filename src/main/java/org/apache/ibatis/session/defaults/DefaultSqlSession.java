@@ -46,8 +46,13 @@ import org.apache.ibatis.session.SqlSession;
  * @author Clinton Begin
  */
 public class DefaultSqlSession implements SqlSession {
-
+  /**
+   * 持有所有的配置文件
+   */
   private final Configuration configuration;
+  /**
+   * 持有执行器
+   */
   private final Executor executor;
 
   private final boolean autoCommit;
@@ -70,6 +75,9 @@ public class DefaultSqlSession implements SqlSession {
     return this.selectOne(statement, null);
   }
 
+  /**
+   *  核心selectOne
+   */
   @Override
   public <T> T selectOne(String statement, Object parameter) {
     // Popular vote was to return null on 0 results and throw exception on too many.
@@ -179,6 +187,12 @@ public class DefaultSqlSession implements SqlSession {
     return insert(statement, null);
   }
 
+  /**
+   * insert 内部也是update,气不气?
+   * @param statement Unique identifier matching the statement to execute.
+   * @param parameter A parameter object to pass to the statement.
+   * @return
+   */
   @Override
   public int insert(String statement, Object parameter) {
     return update(statement, parameter);

@@ -266,10 +266,14 @@ public class MapperBuilderAssistant extends BaseBuilder {
     if (unresolvedCacheRef) {
       throw new IncompleteElementException("Cache-ref not yet resolved");
     }
-
+    /**该方法做的事
+     * 将id变为:nameSpace.方法id
+     */
     id = applyCurrentNamespace(id, false);
     boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
-
+    /**
+     * 构建MappedStatement,放入自定义得HashMap中 key为:mapper接口的全限类名.方法名  value 为:MappedStatement对象
+     */
     MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id, sqlSource, sqlCommandType)
         .resource(resource)
         .fetchSize(fetchSize)
@@ -294,6 +298,9 @@ public class MapperBuilderAssistant extends BaseBuilder {
     }
 
     MappedStatement statement = statementBuilder.build();
+    /**
+     * 往Configuration里的mappedStatement映射里面添加MappedStatement
+     */
     configuration.addMappedStatement(statement);
     return statement;
   }

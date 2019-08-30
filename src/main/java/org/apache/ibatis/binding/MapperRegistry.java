@@ -31,15 +31,31 @@ import org.apache.ibatis.session.SqlSession;
  * @author Eduardo Macarron
  * @author Lasse Voss
  */
+
+/**
+ * mapper接口代理实现类的存放仓库,以HashMap做存储，key为Mapper接口,value为MapperProxyFactory,如下Map<Class<?>, MapperProxyFactory<?>>;
+ */
 public class MapperRegistry {
 
   private final Configuration config;
+  /**
+   * knownMappers 用Map存储的原因是，初始化Mybatis,解析配置文件，添加MapperProxyFactory时候，会先判断Map集合里面有没有这个MapperProxyFactory
+   *
+   * 详见{@link org/apache/ibatis/binding/MapperRegistry.java:76}
+   */
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
   public MapperRegistry(Configuration config) {
     this.config = config;
   }
 
+  /**
+   * 从该仓库里面取mapper接口的代理实现类
+   * @param type  mapper接口类型
+   * @param sqlSession
+   * @param <T> mapper接口代理实现类
+   * @return
+   */
   @SuppressWarnings("unchecked")
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
     final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);

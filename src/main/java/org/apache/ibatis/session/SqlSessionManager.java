@@ -32,11 +32,16 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 /**
  * @author Larry Meadors
  */
-public class SqlSessionManager implements SqlSessionFactory, SqlSession {
+public class SqlSessionManager implements SqlSessionFactory, SqlSession { //可参考SqlSessionManagerTest
 
   private final SqlSessionFactory sqlSessionFactory;
+  /**
+   * 这个变量真的是代理，用的jdk的动态代理
+   */
   private final SqlSession sqlSessionProxy;
-
+  /**
+   *  为了线程安全，只有同一个线程才会使用同一个Sqlsession
+   */
   private final ThreadLocal<SqlSession> localSqlSession = new ThreadLocal<>();
 
   private SqlSessionManager(SqlSessionFactory sqlSessionFactory) {
@@ -337,21 +342,39 @@ public class SqlSessionManager implements SqlSessionFactory, SqlSession {
     }
   }
 
+  /**
+   * 这个InvocationHandler似乎做了很少的事
+   */
   private class SqlSessionInterceptor implements InvocationHandler {
+    /**
+     * 通常InvocationHandler的实现类都会持有《目标接口实现类的引用》,注意是目标接口实现类的引用，参考我的com.yjz.proxy.jdkproxy.ProxyTest
+     * 通常在构造函数里面将目标实现类的引用传入进来
+     */
     public SqlSessionInterceptor() {
         // Prevent Synthetic Access
+      /**
+       * 通常在构造函数里面将目标接口实现类的引用传入进来
+       */
     }
 
+    /**
+     * proxy 是代理类,代理类在执行接口的方法时，会调这个方法
+     * 这个invoke貌似没做啥
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+      //有时候，我们会用到一些内部类和匿名类。当在内部类和匿名类用this时，这个this则指的是匿名类或内部类本身。
+      // 这时如果我们要使用外部类的方法和变量的话，则应该加上外部类的类名
       final SqlSession sqlSession = SqlSessionManager.this.localSqlSession.get();
       if (sqlSession != null) {
+        // 当前线程绑定SqlSession,则执行
         try {
-          return method.invoke(sqlSession, args);
+          return method.invoke(sqlSession, args);//通常这第一个参数是代理的接口(SqlSession)的实现类的引用,此处从线程里面获取sqlSession接口的实现类,然而并没有做额外的处理
         } catch (Throwable t) {
           throw ExceptionUtil.unwrapThrowable(t);
         }
       } else {
+        //当前线程未绑定Sqlsession,则新开启Sqlsession
         try (SqlSession autoSqlSession = openSession()) {
           try {
             final Object result = method.invoke(autoSqlSession, args);

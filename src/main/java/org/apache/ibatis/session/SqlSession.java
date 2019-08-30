@@ -268,6 +268,7 @@ public interface SqlSession extends Closeable {
   Configuration getConfiguration();
 
   /**
+   * SqlSession通过此方法从Configuration中的MapperRegistry的KnowMapper中获取MapperProxyFactory,MapperProxyFactory再newInstance获取Mapper接口的代理实现类
    * Retrieves a mapper.
    * @param <T> the mapper type
    * @param type Mapper interface class

@@ -40,6 +40,9 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   private static final Method privateLookupInMethod;
   private final SqlSession sqlSession;
   private final Class<T> mapperInterface;
+  /**
+   * 存放方法和方法的详细信息(签名信息，增删改查类型)
+   */
   private final Map<Method, MapperMethod> methodCache;
 
   public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface, Map<Method, MapperMethod> methodCache) {
@@ -77,8 +80,18 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
+      /**
+       * 参考:https://www.imooc.com/qadetail/64263
+       * 如果这个method 属于Object 这个类类型，则直接调用了，因为此时这些方法肯定是toString().equals()这类，所以直接调用，没必要做额外处理
+       *
+       * 代理以后，所有Mapper的方法调用时，都会调用这个invoke方法
+       * 并不是任何一个方法都需要执行调用代理对象进行执行，如果这个方法是Object中通用的方法（toString、hashCode等）无需执行
+       */
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, args);
+        /**
+         * 判断是否是java8之后的接口默认方法
+         */
       } else if (method.isDefault()) {
         if (privateLookupInMethod == null) {
           return invokeDefaultMethodJava8(proxy, method, args);
@@ -89,11 +102,21 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);
     }
+    /**
+     * 这里优化了，去缓存中找MapperMethod, MapperMethod就是这个method的各种信息
+     */
     final MapperMethod mapperMethod = cachedMapperMethod(method);
+    /**
+     * Mapper接口代理实现类 真正起作用的地方
+     */
     return mapperMethod.execute(sqlSession, args);
   }
 
   private MapperMethod cachedMapperMethod(Method method) {
+    /**
+     * computeIfAbsent(key,function):Map接口的Default方法
+     * 判断Map.get(key)是否存在,不存在的话则根据这个function,用key计算一个结果，放到Map里面，key就是原来的key,value是根据function函数计算出来的value
+     */
     return methodCache.computeIfAbsent(method,
         k -> new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
   }

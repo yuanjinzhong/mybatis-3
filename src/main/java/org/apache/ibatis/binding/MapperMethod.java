@@ -38,7 +38,7 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
-/**
+/**表明当前方法的 名字，类型，以及方法签名(optional支持在这边解析)
  * @author Clinton Begin
  * @author Eduardo Macarron
  * @author Lasse Voss
@@ -54,12 +54,18 @@ public class MapperMethod {
     this.method = new MethodSignature(config, mapperInterface, method);
   }
 
+  /**
+   * MapperProx.invoke方法的最后执行的地方
+   * @param sqlSession
+   * @param args
+   * @return
+   */
   public Object execute(SqlSession sqlSession, Object[] args) {
     Object result;
     switch (command.getType()) {
       case INSERT: {
         Object param = method.convertArgsToSqlCommandParam(args);
-        result = rowCountResult(sqlSession.insert(command.getName(), param));
+        result = rowCountResult(sqlSession.insert(command.getName(), param)); // 这个command.getName()为:mapper.xml 里面的namespace+方法id
         break;
       }
       case UPDATE: {
@@ -85,6 +91,9 @@ public class MapperMethod {
         } else {
           Object param = method.convertArgsToSqlCommandParam(args);
           result = sqlSession.selectOne(command.getName(), param);
+          /**
+           * 支持optional
+           */
           if (method.returnsOptional()
               && (result == null || !method.getReturnType().equals(result.getClass()))) {
             result = Optional.ofNullable(result);
@@ -218,7 +227,7 @@ public class MapperMethod {
 
   public static class SqlCommand {
 
-    private final String name;
+    private final String name; // mapper.xml 里面的namespace+方法id
     private final SqlCommandType type;
 
     public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
@@ -235,6 +244,9 @@ public class MapperMethod {
               + mapperInterface.getName() + "." + methodName);
         }
       } else {
+        /** name 为：mapper.xml 里面的namespace+方法id
+         * 参考：org/apache/ibatis/builder/MapperBuilderAssistant.java:271
+         */
         name = ms.getId();
         type = ms.getSqlCommandType();
         if (type == SqlCommandType.UNKNOWN) {
@@ -251,11 +263,23 @@ public class MapperMethod {
       return type;
     }
 
+    /**
+     * 告诉我们statementId 是个什么玩意
+     * @param mapperInterface
+     * @param methodName
+     * @param declaringClass
+     * @param configuration
+     * @return
+     */
     private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName,
         Class<?> declaringClass, Configuration configuration) {
+      /**
+       * 拼装Mapper接口得方法名:全限类名.方法名
+       */
       String statementId = mapperInterface.getName() + "." + methodName;
       if (configuration.hasStatement(statementId)) {
         return configuration.getMappedStatement(statementId);
+        //如果接口信息就是所在类的话,直接返回NULL
       } else if (mapperInterface.equals(declaringClass)) {
         return null;
       }
@@ -283,6 +307,9 @@ public class MapperMethod {
     private final String mapKey;
     private final Integer resultHandlerIndex;
     private final Integer rowBoundsIndex;
+    /**
+     * 这是一个接口参数解析器，主要做的事就是将mapper接口参数的下标，和参数值 存到一个Map里面
+     */
     private final ParamNameResolver paramNameResolver;
 
     public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {

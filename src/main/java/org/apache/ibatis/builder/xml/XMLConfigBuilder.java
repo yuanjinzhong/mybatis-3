@@ -90,6 +90,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     this.parser = parser;
   }
 
+  /**
+   * 解析mybatis配置文件
+   * @return
+   */
   public Configuration parse() {
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
@@ -98,7 +102,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
-
+  /**
+   * 解析mybatis配置文件
+   * @return
+   */
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
@@ -116,6 +123,10 @@ public class XMLConfigBuilder extends BaseBuilder {
       environmentsElement(root.evalNode("environments"));
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
       typeHandlerElement(root.evalNode("typeHandlers"));
+      /**
+       * 解析mappers节点,将Mapper接口的代理实现类工厂(MapperProxyFactory)添加到MapperRegistry里的Map里面,
+       * MapperRegistry对象和Configuration对象建立一对一绑定关系
+       */
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
@@ -362,6 +373,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       for (XNode child : parent.getChildren()) {
         if ("package".equals(child.getName())) {
           String mapperPackage = child.getStringAttribute("name");
+
           configuration.addMappers(mapperPackage);
         } else {
           String resource = child.getStringAttribute("resource");

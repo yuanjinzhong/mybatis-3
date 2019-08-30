@@ -177,6 +177,9 @@ public class XMLMapperBuilder extends BaseBuilder {
       Iterator<XMLStatementBuilder> iter = incompleteStatements.iterator();
       while (iter.hasNext()) {
         try {
+          /**parseStatementNode
+           * 部分功能是往Configuration里的mappedStatement映射里面添加MappedStatement
+           */
           iter.next().parseStatementNode();
           iter.remove();
         } catch (IncompleteElementException e) {
