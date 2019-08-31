@@ -27,6 +27,10 @@ import java.sql.SQLException;
 public interface Transaction {
 
   /**
+   *关于Connection
+   * 出于简化的想法，Sun公司，定义了一套面向所有关系型数据库的 API 即 JDBC ，其只提供接口，而具体实现去交给数据库厂商实现，
+   * 而我们作为开发者，我们针对数据数据库的操作，只需要基于JDBC即可
+   *
    * Retrieve inner database connection.
    * @return DataBase connection
    * @throws SQLException
