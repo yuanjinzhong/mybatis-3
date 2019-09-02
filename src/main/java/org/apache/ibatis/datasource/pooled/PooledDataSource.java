@@ -39,7 +39,9 @@ import org.apache.ibatis.logging.LogFactory;
 public class PooledDataSource implements DataSource {
 
   private static final Log log = LogFactory.getLog(PooledDataSource.class);
-
+  /**
+   * 池化数据源和PoolState对象绑定
+   */
   private final PoolState state = new PoolState(this);
 
   private final UnpooledDataSource dataSource;
@@ -151,7 +153,7 @@ public class PooledDataSource implements DataSource {
 
   /**
    * Sets the default network timeout value to wait for the database operation to complete. See {@link Connection#setNetworkTimeout(java.util.concurrent.Executor, int)}
-   * 
+   *
    * @param milliseconds
    *          The time in milliseconds to wait for the database operation to complete.
    * @since 3.5.2
@@ -362,6 +364,11 @@ public class PooledDataSource implements DataSource {
     return ("" + url + username + password).hashCode();
   }
 
+  /**
+   * 往poolstate里面添加一个连接
+   * @param conn
+   * @throws SQLException
+   */
   protected void pushConnection(PooledConnection conn) throws SQLException {
 
     synchronized (state) {
@@ -401,6 +408,13 @@ public class PooledDataSource implements DataSource {
     }
   }
 
+  /**
+   * 从连接池中弹出一个连接(获取连接)
+   * @param username
+   * @param password
+   * @return
+   * @throws SQLException
+   */
   private PooledConnection popConnection(String username, String password) throws SQLException {
     boolean countedWait = false;
     PooledConnection conn = null;
@@ -409,6 +423,9 @@ public class PooledDataSource implements DataSource {
 
     while (conn == null) {
       synchronized (state) {
+        /**
+         * 池化数据源中的空闲连接不为空
+         */
         if (!state.idleConnections.isEmpty()) {
           // Pool has available connection
           conn = state.idleConnections.remove(0);
@@ -417,6 +434,9 @@ public class PooledDataSource implements DataSource {
           }
         } else {
           // Pool does not have available connection
+          /**
+           * 活跃的连接小于最大的连接
+           */
           if (state.activeConnections.size() < poolMaximumActiveConnections) {
             // Can create new connection
             conn = new PooledConnection(dataSource.getConnection(), this);

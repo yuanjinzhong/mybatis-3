@@ -18,14 +18,21 @@ package org.apache.ibatis.datasource.pooled;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/**看下来 PoolState类才是真正的连接池(因为它持有闲置连接和活跃连接,以及连接池的参数，最大，最小，各种count)
  * @author Clinton Begin
  */
 public class PoolState {
-
+  /** 组合
+   * PoolState 对象和 PooledDataSource 对象是1:1对应的(绑定的)
+   */
   protected PooledDataSource dataSource;
-
+  /**
+   * 该池化数据源（dataSource）中闲置的连接
+   */
   protected final List<PooledConnection> idleConnections = new ArrayList<>();
+  /**
+   * 该池化数据源（dataSource）中  活跃的连接
+   */
   protected final List<PooledConnection> activeConnections = new ArrayList<>();
   protected long requestCount = 0;
   protected long accumulatedRequestTime = 0;

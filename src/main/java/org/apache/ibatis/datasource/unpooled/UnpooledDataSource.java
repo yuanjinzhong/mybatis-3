@@ -52,6 +52,22 @@ public class UnpooledDataSource implements DataSource {
   private Integer defaultNetworkTimeout;
 
   static {
+    //从CopyOnWriteArrayList<DriverInfo> registeredDrivers = new CopyOnWriteArrayList<>(); 这个集合里面取驱动,
+    //DriverManager.registeredDrivers 这个集合里面是有驱动得，因为各个厂商得驱动程序里面都有静态代码块，往DriverManager里面注册驱动，如:
+/** mYSQL注册驱动,里面有静态注册的代码块，调用方Class.forname  或者 Spi 机制，都可以将驱动注册到DriverManager
+ * public class Driver extends NonRegisteringDriver implements java.sql.Driver {
+ *       public Driver() throws SQLException {
+ *       }
+ *
+ *       static {
+ *         try {
+ *           DriverManager.registerDriver(new Driver());
+ *         } catch (SQLException var1) {
+ *           throw new RuntimeException("Can't register driver!");
+ *         }
+ *       }
+ *     }
+ */
     Enumeration<Driver> drivers = DriverManager.getDrivers();
     while (drivers.hasMoreElements()) {
       Driver driver = drivers.nextElement();
@@ -216,6 +232,12 @@ public class UnpooledDataSource implements DataSource {
     return doGetConnection(props);
   }
 
+  /**
+   * Mybatis的方法，调用java.sql包里的 {@link DriverManager#getConnection } 获取连接
+   * @param properties
+   * @return
+   * @throws SQLException
+   */
   private Connection doGetConnection(Properties properties) throws SQLException {
     initializeDriver();
     Connection connection = DriverManager.getConnection(url, properties);
@@ -223,11 +245,29 @@ public class UnpooledDataSource implements DataSource {
     return connection;
   }
 
+  /**
+   *将系统中的驱动注入到这个DriverManager#registeredDrivers里面，交给DriverManager管理
+   */
   private synchronized void initializeDriver() throws SQLException {
     if (!registeredDrivers.containsKey(driver)) {
       Class<?> driverType;
       try {
         if (driverClassLoader != null) {
+          /**
+           * 为了将驱动的静态代码块加载到jvm的方法区里面，如下是mysql的驱动:
+           *
+           * public class Driver extends NonRegisteringDriver implements java.sql.Driver {
+           *            public Driver() throws SQLException {
+           *            }
+           *            static {
+           *              try {
+           *                DriverManager.registerDriver(new Driver());
+           *              } catch (SQLException var1) {
+           *                throw new RuntimeException("Can't register driver!");
+           *              }
+           *            }
+           *          }
+           */
           driverType = Class.forName(driver, true, driverClassLoader);
         } else {
           driverType = Resources.classForName(driver);
@@ -258,6 +298,9 @@ public class UnpooledDataSource implements DataSource {
     }
   }
 
+  /**
+   * 仅仅是一个静态代理
+   */
   private static class DriverProxy implements Driver {
     private Driver driver;
 

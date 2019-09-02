@@ -229,10 +229,18 @@ class PooledConnection implements InvocationHandler {
    * @param args   - the parameters to be passed to the method
    * @see java.lang.reflect.InvocationHandler#invoke(Object, java.lang.reflect.Method, Object[])
    */
+  /**
+   *
+   *这边使用动态代理的原因是因为 要实现池化连接
+   *
+   * Connection对象调用close方法时，为了不让Connection对象真正关闭，所以使用jdk的代理，如果是close方法，则将这个连接放到 PooledDataSource里面
+   *
+   */
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
     if (CLOSE.hashCode() == methodName.hashCode() && CLOSE.equals(methodName)) {
+      // 这个this 是指caller, 即ConnectionProxy
       dataSource.pushConnection(this);
       return null;
     }
