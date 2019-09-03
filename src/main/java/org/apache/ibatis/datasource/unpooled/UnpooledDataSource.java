@@ -68,6 +68,7 @@ public class UnpooledDataSource implements DataSource {
  *       }
  *     }
  */
+    //会促销DriverManager里面的spi机制
     Enumeration<Driver> drivers = DriverManager.getDrivers();
     while (drivers.hasMoreElements()) {
       Driver driver = drivers.nextElement();
@@ -240,6 +241,8 @@ public class UnpooledDataSource implements DataSource {
    */
   private Connection doGetConnection(Properties properties) throws SQLException {
     initializeDriver();
+    //C:/Program Files/Java/jdk1.8.0_181/src.zip!/java/sql/DriverManager.java:639 获取调用者的Application ClassLoader 来加载 mysql的驱动,
+    //不然drivermannager的classLoader 是没法加载 mysql的驱动( 父classloader是没法加载子classloader的类的)
     Connection connection = DriverManager.getConnection(url, properties);
     configureConnection(connection);
     return connection;
@@ -268,7 +271,7 @@ public class UnpooledDataSource implements DataSource {
            *            }
            *          }
            */
-          driverType = Class.forName(driver, true, driverClassLoader);
+          driverType = Class.forName(driver, true, driverClassLoader);// 参数的true 表示初始化这个类
         } else {
           driverType = Resources.classForName(driver);
         }
