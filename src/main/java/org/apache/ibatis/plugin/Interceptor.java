@@ -25,6 +25,9 @@ public interface Interceptor {
   Object intercept(Invocation invocation) throws Throwable;
 
   default Object plugin(Object target) {
+    /**
+     * 返回Map实例对象的代理对象
+     */
     return Plugin.wrap(target, this);
   }
 

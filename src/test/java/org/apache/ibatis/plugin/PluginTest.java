@@ -38,6 +38,9 @@ class PluginTest {
     assertNotEquals("Always", map.toString());
   }
 
+  /**
+   * mybatis 的拦截器可以拦截任何方法, 拦截Map.class 的get 方法，让该方法永远返回 "Always"
+   */
   @Intercepts({
       @Signature(type = Map.class, method = "get", args = {Object.class})})
   public static class AlwaysMapPlugin implements Interceptor {
