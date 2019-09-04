@@ -48,10 +48,11 @@ public class Plugin implements InvocationHandler {
    */
   public static Object wrap(Object target, Interceptor interceptor) {
     /**
-     * 解析传入的自定义拦截器(interceptor)上的注解
+     * 解析传入的自定义拦截器(interceptor)上的注解,拼接成类型和方法得map
      */
     Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
     Class<?> type = target.getClass();
+    //这是个安全机制,确定type对象上的接口是否包含注解解析出来得接口
     Class<?>[] interfaces = getAllInterfaces(type, signatureMap);
     if (interfaces.length > 0) {
       return Proxy.newProxyInstance(

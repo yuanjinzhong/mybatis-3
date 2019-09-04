@@ -26,8 +26,14 @@ public class InterceptorChain {
 
   private final List<Interceptor> interceptors = new ArrayList<>();
 
+  /**这里的target是通过for循环不断赋值的，也就是说如果有多个拦截器，那么如果我用P表示代理，生成第一次代理为P(target)，生成第二次代理为P(P(target))，生成第三次代理为P(P(P(target)))，不断嵌套下去，这就得到一个重要的结论：<plugins>...</plugins>中后定义的<plugin>实际其拦截器方法先被执行，因为根据这段代码来看，后定义的<plugin>代理实际后生成，包装了先生成的代理，自然其代理方法也先执行
+   * /
+   * @param target
+   * @return
+   */
   public Object pluginAll(Object target) {
     for (Interceptor interceptor : interceptors) {
+      // 一层一层的的代理，list的中最后面的拦截器的代理在最外面,
       target = interceptor.plugin(target);
     }
     return target;

@@ -55,7 +55,7 @@ public class MapperMethod {
   }
 
   /**
-   * MapperProx.invoke方法的最后执行的地方
+   * MapperProx.invoke方法的最后执行的地方,重点方法  ,  insert ，update ,delete 这三个方法 最终都是走的Executor#update方法
    * @param sqlSession
    * @param args
    * @return

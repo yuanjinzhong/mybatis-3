@@ -22,7 +22,9 @@ import java.lang.reflect.Method;
  * @author Clinton Begin
  */
 public class Invocation {
-
+  /**
+   * 以下三个参数恰好是用反射调用一个方法时所必须的三个参数
+   */
   private final Object target;
   private final Method method;
   private final Object[] args;

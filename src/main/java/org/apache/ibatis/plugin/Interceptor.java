@@ -24,9 +24,14 @@ public interface Interceptor {
 
   Object intercept(Invocation invocation) throws Throwable;
 
+  /**
+   *将目标对象变为代理对象
+   * @param target 需要代理的对象
+   * @return
+   */
   default Object plugin(Object target) {
     /**
-     * 返回Map实例对象的代理对象
+     * 返回target的代理对象, 将代理对象和拦截器绑定
      */
     return Plugin.wrap(target, this);
   }
