@@ -204,7 +204,7 @@ public class DefaultSqlSession implements SqlSession {
   }
 
   @Override
-  public int update(String statement, Object parameter) {
+  public int update(String statement, Object parameter) {//statement为: mapper.xml 里面的namespace+方法id
     try {
       dirty = true;
       MappedStatement ms = configuration.getMappedStatement(statement);
