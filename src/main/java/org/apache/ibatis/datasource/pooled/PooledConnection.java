@@ -23,7 +23,7 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.reflection.ExceptionUtil;
 
-/**
+/** 数据源链接对象
  * @author Clinton Begin
  */
 class PooledConnection implements InvocationHandler {
@@ -54,6 +54,9 @@ class PooledConnection implements InvocationHandler {
     this.createdTimestamp = System.currentTimeMillis();
     this.lastUsedTimestamp = System.currentTimeMillis();
     this.valid = true;
+    /**
+     * 创建代理对象
+     */
     this.proxyConnection = (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), IFACES, this);
   }
 
@@ -239,6 +242,7 @@ class PooledConnection implements InvocationHandler {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
+    //当调用close方法时不是真正的关闭,而是进行池化
     if (CLOSE.hashCode() == methodName.hashCode() && CLOSE.equals(methodName)) {
       // 这个this 是指caller, 即ConnectionProxy
       dataSource.pushConnection(this);

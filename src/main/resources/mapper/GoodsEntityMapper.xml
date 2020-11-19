@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjz.mapper.GoodsEntityMapper">
+    <resultMap id="BaseResultMap" type="org.apache.ibatis.mybatis测试.Entity.GoodsEntity">
+        <id column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="goods_icon_url" property="goodsIconUrl" jdbcType="VARCHAR"/>
+        <result column="goods_image_url" property="goodsImageUrl" jdbcType="VARCHAR"/>
+        <result column="goods_exchanged_num" property="goodsExchangedNum" jdbcType="INTEGER"/>
+        <result column="goods_original_price" property="goodsOriginalPrice" jdbcType="VARCHAR"/>
+        <result column="goods_need_integral" property="goodsNeedIntegral" jdbcType="INTEGER"/>
+        <result column="goods_title" property="goodsTitle" jdbcType="VARCHAR"/>
+        <result column="good_description" property="goodDescription" jdbcType="VARCHAR"/>
+        <result column="good_type" property="goodType" jdbcType="INTEGER"/>
+        <result column="good_status" property="goodStatus" jdbcType="INTEGER"/>
+        <result column="sortcode" property="sortcode" jdbcType="INTEGER"/>
+        <result column="good_cat_id" property="goodCatId" jdbcType="INTEGER"/>
+        <result column="label_id" property="labelId" jdbcType="INTEGER"/>
+        <result column="begin_sell_time" property="beginSellTime" jdbcType="TIMESTAMP"/>
+        <result column="stop_sell_time" property="stopSellTime" jdbcType="TIMESTAMP"/>
+        <result column="deletemark" property="deletemark" jdbcType="VARCHAR"/>
+        <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP"/>
+        <result column="CreateUserId" property="createuserid" jdbcType="INTEGER"/>
+        <result column="CreateUserName" property="createusername" jdbcType="VARCHAR"/>
+        <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP"/>
+        <result column="ModifyUserId" property="modifyuserid" jdbcType="INTEGER"/>
+        <result column="ModifyUserName" property="modifyusername" jdbcType="VARCHAR"/>
+        <result column="goods_supplier_type" property="goodsSupplierType" jdbcType="INTEGER"/>
+        <result column="goods_supplier" property="goodsSupplier" jdbcType="VARCHAR"/>
+        <result column="product_code" property="productCode" jdbcType="VARCHAR"/>
+        <result column="goods_inventory" property="goodsInventory" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    goods_id, goods_name, goods_code, goods_icon_url, goods_image_url, goods_exchanged_num,
+    goods_original_price, goods_need_integral, goods_title, good_description, good_type,
+    good_status, sortcode, good_cat_id, label_id, begin_sell_time, stop_sell_time, deletemark,
+    CreateDate, CreateUserId, CreateUserName, ModifyDate, ModifyUserId, ModifyUserName,
+    goods_supplier_type, goods_supplier, product_code, goods_inventory
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yjz.Entity.GoodsEntityExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from tb_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_goods
+        where goods_id = #{goodsId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.yjz.Entity.GoodsEntityExample">
+        delete from tb_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.yjz.Entity.GoodsEntity">
+    insert into tb_goods (goods_id, goods_name, goods_code,
+      goods_icon_url, goods_image_url, goods_exchanged_num,
+      goods_original_price, goods_need_integral,
+      goods_title, good_description, good_type,
+      good_status, sortcode, good_cat_id,
+      label_id, begin_sell_time, stop_sell_time,
+      deletemark, CreateDate, CreateUserId,
+      CreateUserName, ModifyDate, ModifyUserId,
+      ModifyUserName, goods_supplier_type, goods_supplier,
+      product_code, goods_inventory)
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsCode,jdbcType=VARCHAR},
+      #{goodsIconUrl,jdbcType=VARCHAR}, #{goodsImageUrl,jdbcType=VARCHAR}, #{goodsExchangedNum,jdbcType=INTEGER},
+      #{goodsOriginalPrice,jdbcType=VARCHAR}, #{goodsNeedIntegral,jdbcType=INTEGER},
+      #{goodsTitle,jdbcType=VARCHAR}, #{goodDescription,jdbcType=VARCHAR}, #{goodType,jdbcType=INTEGER},
+      #{goodStatus,jdbcType=INTEGER}, #{sortcode,jdbcType=INTEGER}, #{goodCatId,jdbcType=INTEGER},
+      #{labelId,jdbcType=INTEGER}, #{beginSellTime,jdbcType=TIMESTAMP}, #{stopSellTime,jdbcType=TIMESTAMP},
+      #{deletemark,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=INTEGER},
+      #{createusername,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyuserid,jdbcType=INTEGER},
+      #{modifyusername,jdbcType=VARCHAR}, #{goodsSupplierType,jdbcType=INTEGER}, #{goodsSupplier,jdbcType=VARCHAR},
+      #{productCode,jdbcType=VARCHAR}, #{goodsInventory,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yjz.Entity.GoodsEntity">
+        insert into tb_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsIconUrl != null">
+                goods_icon_url,
+            </if>
+            <if test="goodsImageUrl != null">
+                goods_image_url,
+            </if>
+            <if test="goodsExchangedNum != null">
+                goods_exchanged_num,
+            </if>
+            <if test="goodsOriginalPrice != null">
+                goods_original_price,
+            </if>
+            <if test="goodsNeedIntegral != null">
+                goods_need_integral,
+            </if>
+            <if test="goodsTitle != null">
+                goods_title,
+            </if>
+            <if test="goodDescription != null">
+                good_description,
+            </if>
+            <if test="goodType != null">
+                good_type,
+            </if>
+            <if test="goodStatus != null">
+                good_status,
+            </if>
+            <if test="sortcode != null">
+                sortcode,
+            </if>
+            <if test="goodCatId != null">
+                good_cat_id,
+            </if>
+            <if test="labelId != null">
+                label_id,
+            </if>
+            <if test="beginSellTime != null">
+                begin_sell_time,
+            </if>
+            <if test="stopSellTime != null">
+                stop_sell_time,
+            </if>
+            <if test="deletemark != null">
+                deletemark,
+            </if>
+            <if test="createdate != null">
+                CreateDate,
+            </if>
+            <if test="createuserid != null">
+                CreateUserId,
+            </if>
+            <if test="createusername != null">
+                CreateUserName,
+            </if>
+            <if test="modifydate != null">
+                ModifyDate,
+            </if>
+            <if test="modifyuserid != null">
+                ModifyUserId,
+            </if>
+            <if test="modifyusername != null">
+                ModifyUserName,
+            </if>
+            <if test="goodsSupplierType != null">
+                goods_supplier_type,
+            </if>
+            <if test="goodsSupplier != null">
+                goods_supplier,
+            </if>
+            <if test="productCode != null">
+                product_code,
+            </if>
+            <if test="goodsInventory != null">
+                goods_inventory,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsIconUrl != null">
+                #{goodsIconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsImageUrl != null">
+                #{goodsImageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsExchangedNum != null">
+                #{goodsExchangedNum,jdbcType=INTEGER},
+            </if>
+            <if test="goodsOriginalPrice != null">
+                #{goodsOriginalPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsNeedIntegral != null">
+                #{goodsNeedIntegral,jdbcType=INTEGER},
+            </if>
+            <if test="goodsTitle != null">
+                #{goodsTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="goodDescription != null">
+                #{goodDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="goodType != null">
+                #{goodType,jdbcType=INTEGER},
+            </if>
+            <if test="goodStatus != null">
+                #{goodStatus,jdbcType=INTEGER},
+            </if>
+            <if test="sortcode != null">
+                #{sortcode,jdbcType=INTEGER},
+            </if>
+            <if test="goodCatId != null">
+                #{goodCatId,jdbcType=INTEGER},
+            </if>
+            <if test="labelId != null">
+                #{labelId,jdbcType=INTEGER},
+            </if>
+            <if test="beginSellTime != null">
+                #{beginSellTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopSellTime != null">
+                #{stopSellTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletemark != null">
+                #{deletemark,jdbcType=VARCHAR},
+            </if>
+            <if test="createdate != null">
+                #{createdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createuserid != null">
+                #{createuserid,jdbcType=INTEGER},
+            </if>
+            <if test="createusername != null">
+                #{createusername,jdbcType=VARCHAR},
+            </if>
+            <if test="modifydate != null">
+                #{modifydate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyuserid != null">
+                #{modifyuserid,jdbcType=INTEGER},
+            </if>
+            <if test="modifyusername != null">
+                #{modifyusername,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsSupplierType != null">
+                #{goodsSupplierType,jdbcType=INTEGER},
+            </if>
+            <if test="goodsSupplier != null">
+                #{goodsSupplier,jdbcType=VARCHAR},
+            </if>
+            <if test="productCode != null">
+                #{productCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsInventory != null">
+                #{goodsInventory,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.yjz.Entity.GoodsEntityExample" resultType="java.lang.Integer">
+        select count(*) from tb_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update tb_goods
+        <set>
+            <if test="record.goodsId != null">
+                goods_id = #{record.goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsName != null">
+                goods_name = #{record.goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsCode != null">
+                goods_code = #{record.goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsIconUrl != null">
+                goods_icon_url = #{record.goodsIconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsImageUrl != null">
+                goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsExchangedNum != null">
+                goods_exchanged_num = #{record.goodsExchangedNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsOriginalPrice != null">
+                goods_original_price = #{record.goodsOriginalPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsNeedIntegral != null">
+                goods_need_integral = #{record.goodsNeedIntegral,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsTitle != null">
+                goods_title = #{record.goodsTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodDescription != null">
+                good_description = #{record.goodDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodType != null">
+                good_type = #{record.goodType,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodStatus != null">
+                good_status = #{record.goodStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.sortcode != null">
+                sortcode = #{record.sortcode,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodCatId != null">
+                good_cat_id = #{record.goodCatId,jdbcType=INTEGER},
+            </if>
+            <if test="record.labelId != null">
+                label_id = #{record.labelId,jdbcType=INTEGER},
+            </if>
+            <if test="record.beginSellTime != null">
+                begin_sell_time = #{record.beginSellTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.stopSellTime != null">
+                stop_sell_time = #{record.stopSellTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.deletemark != null">
+                deletemark = #{record.deletemark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createdate != null">
+                CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createuserid != null">
+                CreateUserId = #{record.createuserid,jdbcType=INTEGER},
+            </if>
+            <if test="record.createusername != null">
+                CreateUserName = #{record.createusername,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifydate != null">
+                ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyuserid != null">
+                ModifyUserId = #{record.modifyuserid,jdbcType=INTEGER},
+            </if>
+            <if test="record.modifyusername != null">
+                ModifyUserName = #{record.modifyusername,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsSupplierType != null">
+                goods_supplier_type = #{record.goodsSupplierType,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsSupplier != null">
+                goods_supplier = #{record.goodsSupplier,jdbcType=VARCHAR},
+            </if>
+            <if test="record.productCode != null">
+                product_code = #{record.productCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsInventory != null">
+                goods_inventory = #{record.goodsInventory,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update tb_goods
+        set goods_id = #{record.goodsId,jdbcType=INTEGER},
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+        goods_code = #{record.goodsCode,jdbcType=VARCHAR},
+        goods_icon_url = #{record.goodsIconUrl,jdbcType=VARCHAR},
+        goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
+        goods_exchanged_num = #{record.goodsExchangedNum,jdbcType=INTEGER},
+        goods_original_price = #{record.goodsOriginalPrice,jdbcType=VARCHAR},
+        goods_need_integral = #{record.goodsNeedIntegral,jdbcType=INTEGER},
+        goods_title = #{record.goodsTitle,jdbcType=VARCHAR},
+        good_description = #{record.goodDescription,jdbcType=VARCHAR},
+        good_type = #{record.goodType,jdbcType=INTEGER},
+        good_status = #{record.goodStatus,jdbcType=INTEGER},
+        sortcode = #{record.sortcode,jdbcType=INTEGER},
+        good_cat_id = #{record.goodCatId,jdbcType=INTEGER},
+        label_id = #{record.labelId,jdbcType=INTEGER},
+        begin_sell_time = #{record.beginSellTime,jdbcType=TIMESTAMP},
+        stop_sell_time = #{record.stopSellTime,jdbcType=TIMESTAMP},
+        deletemark = #{record.deletemark,jdbcType=VARCHAR},
+        CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+        CreateUserId = #{record.createuserid,jdbcType=INTEGER},
+        CreateUserName = #{record.createusername,jdbcType=VARCHAR},
+        ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+        ModifyUserId = #{record.modifyuserid,jdbcType=INTEGER},
+        ModifyUserName = #{record.modifyusername,jdbcType=VARCHAR},
+        goods_supplier_type = #{record.goodsSupplierType,jdbcType=INTEGER},
+        goods_supplier = #{record.goodsSupplier,jdbcType=VARCHAR},
+        product_code = #{record.productCode,jdbcType=VARCHAR},
+        goods_inventory = #{record.goodsInventory,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yjz.Entity.GoodsEntity">
+        update tb_goods
+        <set>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsIconUrl != null">
+                goods_icon_url = #{goodsIconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsImageUrl != null">
+                goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsExchangedNum != null">
+                goods_exchanged_num = #{goodsExchangedNum,jdbcType=INTEGER},
+            </if>
+            <if test="goodsOriginalPrice != null">
+                goods_original_price = #{goodsOriginalPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsNeedIntegral != null">
+                goods_need_integral = #{goodsNeedIntegral,jdbcType=INTEGER},
+            </if>
+            <if test="goodsTitle != null">
+                goods_title = #{goodsTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="goodDescription != null">
+                good_description = #{goodDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="goodType != null">
+                good_type = #{goodType,jdbcType=INTEGER},
+            </if>
+            <if test="goodStatus != null">
+                good_status = #{goodStatus,jdbcType=INTEGER},
+            </if>
+            <if test="sortcode != null">
+                sortcode = #{sortcode,jdbcType=INTEGER},
+            </if>
+            <if test="goodCatId != null">
+                good_cat_id = #{goodCatId,jdbcType=INTEGER},
+            </if>
+            <if test="labelId != null">
+                label_id = #{labelId,jdbcType=INTEGER},
+            </if>
+            <if test="beginSellTime != null">
+                begin_sell_time = #{beginSellTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopSellTime != null">
+                stop_sell_time = #{stopSellTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletemark != null">
+                deletemark = #{deletemark,jdbcType=VARCHAR},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createuserid != null">
+                CreateUserId = #{createuserid,jdbcType=INTEGER},
+            </if>
+            <if test="createusername != null">
+                CreateUserName = #{createusername,jdbcType=VARCHAR},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyuserid != null">
+                ModifyUserId = #{modifyuserid,jdbcType=INTEGER},
+            </if>
+            <if test="modifyusername != null">
+                ModifyUserName = #{modifyusername,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsSupplierType != null">
+                goods_supplier_type = #{goodsSupplierType,jdbcType=INTEGER},
+            </if>
+            <if test="goodsSupplier != null">
+                goods_supplier = #{goodsSupplier,jdbcType=VARCHAR},
+            </if>
+            <if test="productCode != null">
+                product_code = #{productCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsInventory != null">
+                goods_inventory = #{goodsInventory,jdbcType=INTEGER},
+            </if>
+        </set>
+        where goods_id = #{goodsId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yjz.Entity.GoodsEntity">
+    update tb_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_icon_url = #{goodsIconUrl,jdbcType=VARCHAR},
+      goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
+      goods_exchanged_num = #{goodsExchangedNum,jdbcType=INTEGER},
+      goods_original_price = #{goodsOriginalPrice,jdbcType=VARCHAR},
+      goods_need_integral = #{goodsNeedIntegral,jdbcType=INTEGER},
+      goods_title = #{goodsTitle,jdbcType=VARCHAR},
+      good_description = #{goodDescription,jdbcType=VARCHAR},
+      good_type = #{goodType,jdbcType=INTEGER},
+      good_status = #{goodStatus,jdbcType=INTEGER},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      good_cat_id = #{goodCatId,jdbcType=INTEGER},
+      label_id = #{labelId,jdbcType=INTEGER},
+      begin_sell_time = #{beginSellTime,jdbcType=TIMESTAMP},
+      stop_sell_time = #{stopSellTime,jdbcType=TIMESTAMP},
+      deletemark = #{deletemark,jdbcType=VARCHAR},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      CreateUserId = #{createuserid,jdbcType=INTEGER},
+      CreateUserName = #{createusername,jdbcType=VARCHAR},
+      ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      ModifyUserId = #{modifyuserid,jdbcType=INTEGER},
+      ModifyUserName = #{modifyusername,jdbcType=VARCHAR},
+      goods_supplier_type = #{goodsSupplierType,jdbcType=INTEGER},
+      goods_supplier = #{goodsSupplier,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      goods_inventory = #{goodsInventory,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+</mapper>

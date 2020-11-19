@@ -32,7 +32,7 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.io.Resources;
 
-/**
+/** 此乃真的线程池，获取链接是从这里发生的
  * @author Clinton Begin
  * @author Eduardo Macarron
  */

@@ -18,7 +18,10 @@ package org.apache.ibatis.transaction;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/** 包装数据库连接
+/**
+ * mybatis的事务,
+ * 事务是一个抽象概念,事务本质上是依据不同【隔离级别】和【传播行为】对Connection对象的处理(提交/回滚/关闭/等)
+ * 包装数据库连接
  * Wraps a database connection.
  * Handles the connection lifecycle that comprises: its creation, preparation, commit/rollback and close.
  *

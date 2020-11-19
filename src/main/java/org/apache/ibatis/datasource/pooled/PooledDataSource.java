@@ -40,7 +40,7 @@ public class PooledDataSource implements DataSource {
 
   private static final Log log = LogFactory.getLog(PooledDataSource.class);
   /**
-   * 池化数据源和PoolState对象绑定
+   * 池化数据源和PoolState对象绑定, 真正的数据库链接维护在这里
    */
   private final PoolState state = new PoolState(this);
 
@@ -435,7 +435,7 @@ public class PooledDataSource implements DataSource {
         } else {
           // Pool does not have available connection
           /**
-           * 活跃的连接小于最大的连接
+           * 活跃的连接小于最大的连接(10个)
            */
           if (state.activeConnections.size() < poolMaximumActiveConnections) {
             // Can create new connection

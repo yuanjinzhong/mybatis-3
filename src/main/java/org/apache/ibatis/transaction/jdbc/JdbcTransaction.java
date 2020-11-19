@@ -62,6 +62,10 @@ public class JdbcTransaction implements Transaction {
     return connection;
   }
 
+  /**
+   * 本质上事务都是对jdbc Connection接口的操作,该接口的具体是由驱动厂商实现的
+   * @throws SQLException
+   */
   @Override
   public void commit() throws SQLException {
     if (connection != null && !connection.getAutoCommit()) {
@@ -85,6 +89,10 @@ public class JdbcTransaction implements Transaction {
   @Override
   public void close() throws SQLException {
     if (connection != null) {
+      /**
+       * 既然关闭链接为什么还需要设置链接autocommit？
+       * 因为connection对应可能是个代理对象,既然是代理对象connection.close();就不一定是真的关闭链接 ,可能是池化链接，参考PooledConnection
+       */
       resetAutoCommit();
       if (log.isDebugEnabled()) {
         log.debug("Closing JDBC Connection [" + connection + "]");

@@ -17,7 +17,7 @@ package org.apache.ibatis.datasource.pooled;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// 或者说是连接池的state数据，持有真正的数据库connection对象
 /**看下来 PoolState类才是真正的连接池(因为它持有闲置连接和活跃连接,以及连接池的参数，最大，最小，各种count)
  * @author Clinton Begin
  */

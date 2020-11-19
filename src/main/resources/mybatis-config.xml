@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--开启sql语句日志记录-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--开启/禁用二级缓存-->
+        <setting name="cacheEnabled" value="false"/>
+    </settings>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://47.98.237.214:3306/MyStudy?autoReconnect=true"/>
+                <property name="username" value="root"/>
+                <property name="password" value="asdf12580"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mapper/Goods.xml"/>
+    </mappers>
+</configuration>
+
+
+        <!--原生mybatis学习-->
