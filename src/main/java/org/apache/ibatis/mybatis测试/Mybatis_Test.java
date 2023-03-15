@@ -17,6 +17,7 @@ package org.apache.ibatis.mybatis测试;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mybatis测试.entity.UserInfoEntity;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.util.Enumeration;
+import java.util.List;
 
 @Slf4j
 public class Mybatis_Test {
@@ -51,12 +53,12 @@ public class Mybatis_Test {
     SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
     //利用sqlSession会话工厂打开 sqlSession
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    int count = sqlSession.selectOne("org.apache.ibatis.mybatis测试.mapper.GoodsMapper.queryGoodsCount");
-    log.info("查询结果:{}", count);
+    List<UserInfoEntity> res1 = sqlSession.selectList("org.apache.ibatis.mybatis测试.mapper.UserInfoEntityMapper.selectAll");
+    log.info("查询结果:{}", res1);
     //清空一级缓存
     sqlSession.clearCache();
-    int count2 = sqlSession.selectOne("org.apache.ibatis.mybatis测试.mapper.GoodsMapper.queryGoodsCount");
-    log.info("第二次查询结果:{}", count2);
+    List<UserInfoEntity> res2 = sqlSession.selectList("org.apache.ibatis.mybatis测试.mapper.UserInfoEntityMapper.selectAll");
+    log.info("第二次查询结果:{}", res2);
 
   }
 }
