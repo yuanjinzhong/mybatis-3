@@ -91,7 +91,7 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   /**
-   * 解析mybatis配置文件
+   * 解析mybatis配置文件,生成Configuration对象
    * @return
    */
   public Configuration parse() {
@@ -251,6 +251,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 这里面的key值都是,mybatis配置文件里面 <settings>节点里面的东西
+   * @param props
+   */
   private void settingsElement(Properties props) {
     configuration.setAutoMappingBehavior(AutoMappingBehavior.valueOf(props.getProperty("autoMappingBehavior", "PARTIAL")));
     configuration.setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.valueOf(props.getProperty("autoMappingUnknownColumnBehavior", "NONE")));
