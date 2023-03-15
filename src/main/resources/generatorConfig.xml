@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 使用方法： 直接通过运行maven插件来生成相应的model, mapper及xml
+maven命令： mybatis-generator:generate -Dmybatis.generator.overwrite=true
+-->
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <properties resource="generator.properties"/>
+
+  <context defaultModelType="flat" id="Mysql" targetRuntime="MyBatis3Simple">
+    <property name="beginningDelimiter" value="`"/>
+    <property name="endingDelimiter" value="`"/>
+
+<!--    <plugin type="tk.mybatis.mapper.generator.MapperPlugin">-->
+<!--      <property name="mappers" value="com.quixmart.common.mapper.CommonMapper"/>-->
+<!--    </plugin>-->
+
+    <jdbcConnection connectionURL="${spring.datasource.url}"
+      driverClass="${spring.datasource.driver-class-name}"
+      password="${spring.datasource.password}"
+      userId="${spring.datasource.username}">
+    </jdbcConnection>
+
+    <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
+
+    <sqlMapGenerator targetPackage="${targetXMLPackage}" targetProject="${targetResourcesProject}"/>
+
+    <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"
+      type="XMLMAPPER"/>
+
+    <!--<table domainObjectName="MerchantGoods" tableName="b_merchant_goods">-->
+      <!--<property name="useActualColumnNames" value="false"/>-->
+      <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+    <!--<table domainObjectName="StoreGoodsPrice" tableName="b_store_goods_price">-->
+      <!--<property name="useActualColumnNames" value="false"/>-->
+      <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+    <!--<table domainObjectName="ModelGoodsPeriodPrice" tableName="b_model_goods_period_price">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="MerchantRegister" tableName="b_merchant_register">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="MerchantRegisterAudit" tableName="b_merchant_register_audit">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="ReplenishStaff" tableName="b_replenish_staff">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="ReplenishOrder" tableName="b_replenish_order">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="ReplenishOrderDetail" tableName="b_replenish_order_detail">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="ReplenishViewdata" tableName="b_replenish_viewdata">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="DeviceReplenishStaff" tableName="b_device_replenish_staff">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="StoreOperationOwner" tableName="b_store_operation_owner">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="StoreMaintenanceOwner" tableName="b_store_maintenance_owner">-->
+    <!--<property name="useActualColumnNames" value="false"/>-->
+    <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="PriceVerifyRecord" tableName="b_price_verify_record">-->
+      <!--<property name="useActualColumnNames" value="false"/>-->
+      <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="PriceVerifyRecordDetail" tableName="b_price_verify_record_detail">-->
+      <!--<property name="useActualColumnNames" value="false"/>-->
+      <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+
+    <!--<table domainObjectName="MerchantPriceVerify" tableName="b_merchant_price_verify">-->
+      <!--<property name="useActualColumnNames" value="false"/>-->
+      <!--<generatedKey column="id" identity="true" sqlStatement="Mysql"/>-->
+    <!--</table>-->
+<!--
+    <table domainObjectName="MerchantGoodsReplenishMethod" tableName="b_merchant_goods_replenish_method">
+      <property name="useActualColumnNames" value="false"/>
+      <generatedKey column="id" identity="true" sqlStatement="Mysql"/>
+    </table>
+-->
+
+   <table domainObjectName="UserInfoEntity" tableName="user_info">
+      <property name="useActualColumnNames" value="false"/>
+      <generatedKey column="id" identity="true" sqlStatement="Mysql"/>
+    </table>
+
+  </context>
+</generatorConfiguration>
