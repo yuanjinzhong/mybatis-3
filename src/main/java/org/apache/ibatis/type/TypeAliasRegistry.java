@@ -33,6 +33,8 @@ import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.io.Resources;
 
 /**
+ * 组合模式，组合一个map,可以理解为一个map
+ *
  * @author Clinton Begin
  */
 public class TypeAliasRegistry {

@@ -36,6 +36,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
+ *
+ *  对应枚举值为 ExecutorType#BATCH
  * @author Jeff Butler
  */
 public class BatchExecutor extends BaseExecutor {

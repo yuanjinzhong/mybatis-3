@@ -30,6 +30,7 @@ import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.reflection.ExceptionUtil;
 
 /**
+ * 线程安全的
  * @author Larry Meadors
  */
 public class SqlSessionManager implements SqlSessionFactory, SqlSession { //可参考SqlSessionManagerTest
@@ -374,7 +375,7 @@ public class SqlSessionManager implements SqlSessionFactory, SqlSession { //可�
           throw ExceptionUtil.unwrapThrowable(t);
         }
       } else {
-        //当前线程未绑定Sqlsession,则新开启Sqlsession
+        //当前线程未绑定Sqlsession,则新开启Sqlsession，try with resource 语句; 执行完，sqlSession就关闭
         try (SqlSession autoSqlSession = openSession()) {
           try {
             final Object result = method.invoke(autoSqlSession, args);

@@ -34,6 +34,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
+ *  对应 枚举值为 ExecutorType#REUSE
  * @author Clinton Begin
  */
 public class ReuseExecutor extends BaseExecutor {

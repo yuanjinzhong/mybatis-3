@@ -47,6 +47,9 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.JdbcType;
 
 /**
+ *
+ * 解析mybatis配置文件,生成Configuration对象
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -118,6 +121,9 @@ public class XMLConfigBuilder extends BaseBuilder {
       objectFactoryElement(root.evalNode("objectFactory"));
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
+      /**
+       * 设置Configuration对象的属性
+       */
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
       environmentsElement(root.evalNode("environments"));

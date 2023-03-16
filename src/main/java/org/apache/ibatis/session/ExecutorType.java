@@ -17,6 +17,8 @@ package org.apache.ibatis.session;
 
 /**
  * @author Clinton Begin
+ *
+ * 对应 BaseExecutor 接口的三个子类
  */
 public enum ExecutorType {
   SIMPLE, REUSE, BATCH

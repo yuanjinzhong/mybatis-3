@@ -32,6 +32,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
+ *  对应枚举值 为 ExecutorType#SIMPLE
+ *
  * @author Clinton Begin
  */
 public class SimpleExecutor extends BaseExecutor {

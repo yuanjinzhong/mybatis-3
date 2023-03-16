@@ -43,6 +43,8 @@ import org.apache.ibatis.session.SqlSession;
  * The default implementation for {@link SqlSession}.
  * Note that this class is not Thread-Safe.
  *
+ * 线程不安全的
+ *
  * @author Clinton Begin
  */
 public class DefaultSqlSession implements SqlSession {
@@ -53,7 +55,7 @@ public class DefaultSqlSession implements SqlSession {
   /**
    * 持有执行器
    */
-  private final Executor executor;
+  private final Executor executor; //sqlSession的所有抽象操作委托给Executor执行
 
   private final boolean autoCommit;
   private boolean dirty;

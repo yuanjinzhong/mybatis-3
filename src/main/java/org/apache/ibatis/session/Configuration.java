@@ -150,6 +150,10 @@ public class Configuration {
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
 
+  /**
+   * mapper接口与mapper.xml 中语句的映射
+   * 这是一个严格模式的map，尝试获取一个不存在的元素时，会抛出异常
+   */
   protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")
       .conflictMessageProducer((savedValue, targetValue) ->
           ". please check " + savedValue.getResource() + " and " + targetValue.getResource());
@@ -178,6 +182,9 @@ public class Configuration {
     this.environment = environment;
   }
 
+  /**
+   * 初始化configuration对象时候，将 别名与类 注册起来，这些别名都是配置 mybatis-config.xml需要用到的key
+   */
   public Configuration() {
     typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
     typeAliasRegistry.registerAlias("MANAGED", ManagedTransactionFactory.class);
