@@ -20,4 +20,10 @@ package org.apache.ibatis.mapping;
  */
 public enum SqlCommandType {
   UNKNOWN, INSERT, UPDATE, DELETE, SELECT, FLUSH;
+
+  /**
+   * FLUSH 的作用， 详见{@link  org/apache/ibatis/binding/MapperMethod.java:239}，如果mapper接口方法上有{@link @Flush 注解}
+   *
+   * 则设置  type = SqlCommandType.FLUSH;
+   */
 }

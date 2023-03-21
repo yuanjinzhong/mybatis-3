@@ -56,7 +56,7 @@ public class Mybatis_Test {
     List<UserInfoEntity> res1 = sqlSession.selectList("org.apache.ibatis.mybatis测试.mapper.UserInfoEntityMapper.selectAll");
     log.info("查询结果:{}", res1);
     //清空一级缓存
-    sqlSession.clearCache();
+   // sqlSession.clearCache();
     List<UserInfoEntity> res2 = sqlSession.selectList("org.apache.ibatis.mybatis测试.mapper.UserInfoEntityMapper.selectAll");
     log.info("第二次查询结果:{}", res2);
 

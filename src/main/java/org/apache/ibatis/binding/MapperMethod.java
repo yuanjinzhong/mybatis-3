@@ -264,7 +264,7 @@ public class MapperMethod {
     }
 
     /**
-     * 告诉我们statementId 是个什么玩意
+     * 告诉我们statementId 是个什么玩意： String statementId = mapperInterface.getName() + "." + methodName;
      * @param mapperInterface
      * @param methodName
      * @param declaringClass
@@ -308,7 +308,7 @@ public class MapperMethod {
     private final Integer resultHandlerIndex;
     private final Integer rowBoundsIndex;
     /**
-     * 这是一个接口参数解析器，主要做的事就是将mapper接口参数的下标，和参数值 存到一个Map里面
+     * 这是一个接口参数解析器，主要做的事就是将mapper接口参数的下标，和参数值 存到一个Map里面，key 是下标，值是value
      */
     private final ParamNameResolver paramNameResolver;
 

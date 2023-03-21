@@ -20,6 +20,7 @@ import org.apache.ibatis.domain.blog.Author;
 import org.apache.ibatis.domain.blog.Post;
 import org.apache.ibatis.domain.blog.Section;
 import org.apache.ibatis.executor.BatchResult;
+import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.*;
 import org.apache.ibatis.transaction.TransactionFactory;
@@ -47,6 +48,7 @@ public class FlushTest {
         configuration.getTypeAliasRegistry().registerAlias(Post.class);
         configuration.getTypeAliasRegistry().registerAlias(Author.class);
         configuration.addMapper(BoundAuthorMapper.class);
+        configuration.setLogImpl(StdOutImpl.class);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
     }
 
