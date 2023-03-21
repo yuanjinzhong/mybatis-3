@@ -104,6 +104,8 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     }
     /**
      * 这里优化了，去缓存中找MapperMethod, MapperMethod就是这个method的各种信息
+     *
+     * 不过感觉没什么效果,创建一个MapperMethod对象好像也没什么开销
      */
     final MapperMethod mapperMethod = cachedMapperMethod(method);
     /**

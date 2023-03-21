@@ -29,6 +29,9 @@ import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 对mapper.xml文件里面的一个方法的抽象
+ *
+ * 不是对整个mapper.xml的抽象,只是一个方法
  * @author Clinton Begin
  */
 public final class MappedStatement {

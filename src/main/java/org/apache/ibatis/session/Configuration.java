@@ -151,7 +151,7 @@ public class Configuration {
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
 
   /**
-   * mapper接口与mapper.xml 中语句的映射
+   * mapper接口中的一个方法(接口名(或者称之为namespace)+方法)与 mapper.xml中表示该方法的抽象 的映射
    * 这是一个严格模式的map，尝试获取一个不存在的元素时，会抛出异常
    */
   protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")

@@ -299,7 +299,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
 
     MappedStatement statement = statementBuilder.build();
     /**
-     * 往Configuration里的mappedStatement映射里面添加MappedStatement
+     * 往Configuration里的mappedStatement集合里面添加映射,key为nameSpace+方法名字,value为mapper.xml里面的一个方法的抽象
      */
     configuration.addMappedStatement(statement);
     return statement;

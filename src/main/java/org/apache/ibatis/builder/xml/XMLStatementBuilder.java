@@ -54,6 +54,7 @@ public class XMLStatementBuilder extends BaseBuilder {
   }
 
   public void parseStatementNode() {
+    //id其实就是方法名字
     String id = context.getStringAttribute("id");
     String databaseId = context.getStringAttribute("databaseId");
 

@@ -65,7 +65,7 @@ public class MapperMethod {
     switch (command.getType()) {
       case INSERT: {
         Object param = method.convertArgsToSqlCommandParam(args);
-        result = rowCountResult(sqlSession.insert(command.getName(), param)); // 这个command.getName()为:mapper.xml 里面的namespace+方法id
+        result = rowCountResult(sqlSession.insert(command.getName(), param)); // 这个command.getName()为:mapper.xml 里面的namespace+方法id(方法名)
         break;
       }
       case UPDATE: {

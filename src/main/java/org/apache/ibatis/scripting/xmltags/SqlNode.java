@@ -16,6 +16,8 @@
 package org.apache.ibatis.scripting.xmltags;
 
 /**
+ * sqlNode 如其名，用于存储 sql 的 Node 节点，Mybatis 中可使用 if、where 等标签，也就是说，拥有对应的 Node 节点进行相应的节点进行处理。
+ *
  * @author Clinton Begin
  */
 public interface SqlNode {

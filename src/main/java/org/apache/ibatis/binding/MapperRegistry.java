@@ -42,6 +42,9 @@ public class MapperRegistry {
    * knownMappers 用Map存储的原因是，初始化Mybatis,解析配置文件，添加MapperProxyFactory时候，会先判断Map集合里面有没有这个MapperProxyFactory
    *
    * 详见{@link org/apache/ibatis/binding/MapperRegistry.java:76}
+   *
+   * key为mapper接口的Class对象, value为生成mapper接口代理对象 的工厂(MapperProxyFactory)
+   *
    */
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 

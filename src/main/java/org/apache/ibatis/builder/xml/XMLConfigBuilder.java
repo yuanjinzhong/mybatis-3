@@ -130,7 +130,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
       typeHandlerElement(root.evalNode("typeHandlers"));
       /**
-       * 解析mappers节点,将Mapper接口的代理实现类工厂(MapperProxyFactory)添加到MapperRegistry里的Map里面,
+       * 解析mybatis-config.xml文件的mappers节点,将Mapper接口的代理实现类工厂(MapperProxyFactory)添加到MapperRegistry里的Map里面,
        * MapperRegistry对象和Configuration对象建立一对一绑定关系
        */
       mapperElement(root.evalNode("mappers"));
