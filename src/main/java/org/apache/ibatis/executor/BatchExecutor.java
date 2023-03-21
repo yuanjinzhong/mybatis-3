@@ -73,6 +73,7 @@ public class BatchExecutor extends BaseExecutor {
       handler.parameterize(stmt);    //fix Issues 322
       currentSql = sql;
       currentStatement = ms;
+      //ExecutorType=BATCH 则执行更新语句的时候，不是真正的执行，而是将statement缓存起来（绑定在BatchExecutor上面），执行@Flush标注的方法的时候，才正式执行
       statementList.add(stmt);
       batchResultList.add(new BatchResult(ms, sql, parameterObject));
     }

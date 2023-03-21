@@ -235,6 +235,7 @@ public class MapperMethod {
       final Class<?> declaringClass = method.getDeclaringClass();
       MappedStatement ms = resolveMappedStatement(mapperInterface, methodName, declaringClass,
           configuration);
+      //@Flush对应的Mapper方法是没有xml语句的，也就是没有MappedStatement
       if (ms == null) {
         if (method.getAnnotation(Flush.class) != null) {
           name = null;
