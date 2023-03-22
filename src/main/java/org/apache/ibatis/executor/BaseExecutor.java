@@ -170,7 +170,7 @@ public abstract class BaseExecutor implements Executor {
       }
       // issue #601
       deferredLoads.clear();
-      //二级缓存查询玩就清空？？
+      //二级缓存查询完毕就清空？？
       if (configuration.getLocalCacheScope() == LocalCacheScope.STATEMENT) {
         // issue #482
         clearLocalCache();

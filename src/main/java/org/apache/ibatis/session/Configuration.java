@@ -109,7 +109,7 @@ public class Configuration {
   protected boolean multipleResultSetsEnabled = true;
   protected boolean useGeneratedKeys;
   protected boolean useColumnLabel = true;
-  //不知道是一级缓存还是二级缓存
+  //这是二级缓存
   protected boolean cacheEnabled = true;
   protected boolean callSettersOnNulls;
   protected boolean useActualParamName = true;
@@ -118,6 +118,7 @@ public class Configuration {
   protected String logPrefix;
   protected Class<? extends Log> logImpl;
   protected Class<? extends VFS> vfsImpl;
+  //一级缓存级别
   protected LocalCacheScope localCacheScope = LocalCacheScope.SESSION;
   protected JdbcType jdbcTypeForNull = JdbcType.OTHER;
   protected Set<String> lazyLoadTriggerMethods = new HashSet<>(Arrays.asList("equals", "clone", "hashCode", "toString"));
@@ -617,7 +618,7 @@ public class Configuration {
     } else {
       executor = new SimpleExecutor(this, transaction);
     }
-    //如果二级缓存开关开启的话，是使用CahingExecutor装饰BaseExecutor的子类
+    //如果二级缓存开关开启的话， 则使用CachingExecutor,实际上还是委托普通的Executor只不过在执行逻辑前后加上缓存逻辑
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);
     }

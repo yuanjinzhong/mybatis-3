@@ -25,6 +25,11 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
 /**
+ *
+ *  2级别缓存, 有提交语义,未提交的数据放在中间集合里面(entriesToAddOnCommit)
+ *
+ *  提交数据的时候就委托 delegate对象
+ *
  * The 2nd level cache transactional buffer.
  * <p>
  * This class holds all cache entries that are to be added to the 2nd level cache during a Session.
@@ -76,6 +81,7 @@ public class TransactionalCache implements Cache {
     }
   }
 
+  //提交之前,缓存的数据都是在这个中间容器里面
   @Override
   public void putObject(Object key, Object object) {
     entriesToAddOnCommit.put(key, object);
@@ -91,11 +97,12 @@ public class TransactionalCache implements Cache {
     clearOnCommit = true;
     entriesToAddOnCommit.clear();
   }
-
+  //这个commit 语义其实是弄了一个中间容器,提交的时候把数据从中间容器放到目标容器里面
   public void commit() {
     if (clearOnCommit) {
       delegate.clear();
     }
+    //commit 语义的实现
     flushPendingEntries();
     reset();
   }

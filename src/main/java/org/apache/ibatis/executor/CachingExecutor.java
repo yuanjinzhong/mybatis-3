@@ -33,12 +33,19 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
+ * 如果配置中Configuration#cacheEnabled==true,表示开启二级缓存,则会构造这个CachingExecutor
+ *
+ * 所以 TransactionalCacheManager tcm = new TransactionalCacheManager();
+ *
+ * 是二级缓存的容器
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
 public class CachingExecutor implements Executor {
 
   private final Executor delegate;
+
   private final TransactionalCacheManager tcm = new TransactionalCacheManager();
 
   public CachingExecutor(Executor delegate) {
