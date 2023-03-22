@@ -19,11 +19,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * 方法调用的抽象
  * @author Clinton Begin
  */
 public class Invocation {
   /**
-   * 以下三个参数恰好是用反射调用一个方法时所必须的三个参数
+   * 以下三个参数恰好是用反射调用一个方法时所必须的三个参数， 抽象成一个方法调用
    */
   private final Object target;
   private final Method method;

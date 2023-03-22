@@ -34,6 +34,7 @@ class PluginTest {
   @Test
   void shouldNotInterceptToString() {
     Map map = new HashMap();
+    //传入目标对象，plugin一下，得到一个代理目标对象
     map = (Map) new AlwaysMapPlugin().plugin(map);
     assertNotEquals("Always", map.toString());
   }

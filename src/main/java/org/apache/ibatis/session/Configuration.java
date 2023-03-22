@@ -109,6 +109,7 @@ public class Configuration {
   protected boolean multipleResultSetsEnabled = true;
   protected boolean useGeneratedKeys;
   protected boolean useColumnLabel = true;
+  //不知道是一级缓存还是二级缓存
   protected boolean cacheEnabled = true;
   protected boolean callSettersOnNulls;
   protected boolean useActualParamName = true;
@@ -616,6 +617,7 @@ public class Configuration {
     } else {
       executor = new SimpleExecutor(this, transaction);
     }
+    //开启了缓存
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);
     }
