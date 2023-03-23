@@ -15,12 +15,12 @@
  */
 package org.apache.ibatis.session;
 
-/**
+/**  这俩个是一级缓存的作用域
  * @author Eduardo Macarron
  */
 public enum LocalCacheScope {
-  //一级缓存
+  //sqlSession 级别
   SESSION,
-  //二级缓存
+  //设置成这个等价于禁用一级缓存， 参考：org/apache/ibatis/executor/BaseExecutor.java:177
   STATEMENT
 }
