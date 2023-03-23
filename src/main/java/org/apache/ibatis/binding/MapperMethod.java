@@ -307,6 +307,7 @@ public class MapperMethod {
     private final Class<?> returnType;
     private final String mapKey;
     private final Integer resultHandlerIndex;
+    //rowBound作为mapper接口参数的下标
     private final Integer rowBoundsIndex;
     /**
      * 这是一个接口参数解析器，主要做的事就是将mapper接口参数的下标，和参数值 存到一个Map里面，key 是下标，值是value

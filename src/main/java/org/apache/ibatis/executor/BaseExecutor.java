@@ -60,6 +60,9 @@ public abstract class BaseExecutor implements Executor {
    * 一级缓存的cache
    */
   protected PerpetualCache localCache;
+  /**
+   * 存储过程的缓存--不关心吧。。
+   */
   protected PerpetualCache localOutputParameterCache;
   protected Configuration configuration;
 
@@ -147,6 +150,7 @@ public abstract class BaseExecutor implements Executor {
     if (closed) {
       throw new ExecutorException("Executor was closed.");
     }
+    //ms.isFlushCacheRequired() 这是mapper.xml上配置标签刷新一级缓存
     if (queryStack == 0 && ms.isFlushCacheRequired()) {
       clearLocalCache();
     }
@@ -155,7 +159,7 @@ public abstract class BaseExecutor implements Executor {
       queryStack++;
       list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;
       if (list != null) {
-        //从缓存取
+        //这也是一级缓存，只不过是存储过程的缓存
         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
       } else {
         // query from database
@@ -170,7 +174,7 @@ public abstract class BaseExecutor implements Executor {
       }
       // issue #601
       deferredLoads.clear();
-      //二级缓存查询完毕就清空？？
+      // 一级缓存的作用域是STATEMENT 则清空, 等价于禁用了一级缓存；
       if (configuration.getLocalCacheScope() == LocalCacheScope.STATEMENT) {
         // issue #482
         clearLocalCache();

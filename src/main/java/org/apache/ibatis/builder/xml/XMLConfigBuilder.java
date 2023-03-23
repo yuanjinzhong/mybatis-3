@@ -264,7 +264,9 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void settingsElement(Properties props) {
     configuration.setAutoMappingBehavior(AutoMappingBehavior.valueOf(props.getProperty("autoMappingBehavior", "PARTIAL")));
     configuration.setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.valueOf(props.getProperty("autoMappingUnknownColumnBehavior", "NONE")));
-    //默认开启 二级缓存， 这是二级缓存，详细看美团的文章https://tech.meituan.com/2018/01/19/mybatis-cache.html
+    //二级缓存的全局开关，配置在mybatis-config.xml文件的<setting>节点里面；mybatis的全局配置文件里面详细看美团的文章https://tech.meituan.com/2018/01/19/mybatis-cache.html
+    //虽然二级缓存的全局开关默认打开，但是不一定使用
+    //因为二级缓存是MappedStatement级别，还要依据mapper.xml里面的<cache/>标签，有该标签，则当前MappedStatement或者mapper.xml开启二级缓存
     configuration.setCacheEnabled(booleanValueOf(props.getProperty("cacheEnabled"), true));
     configuration.setProxyFactory((ProxyFactory) createInstance(props.getProperty("proxyFactory")));
     configuration.setLazyLoadingEnabled(booleanValueOf(props.getProperty("lazyLoadingEnabled"), false));
@@ -278,7 +280,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     configuration.setDefaultResultSetType(resolveResultSetType(props.getProperty("defaultResultSetType")));
     configuration.setMapUnderscoreToCamelCase(booleanValueOf(props.getProperty("mapUnderscoreToCamelCase"), false));
     configuration.setSafeRowBoundsEnabled(booleanValueOf(props.getProperty("safeRowBoundsEnabled"), false));
-    //这边是一级缓存 session级别
+    //这边是一级缓存的作用域
     configuration.setLocalCacheScope(LocalCacheScope.valueOf(props.getProperty("localCacheScope", "SESSION")));
     configuration.setJdbcTypeForNull(JdbcType.valueOf(props.getProperty("jdbcTypeForNull", "OTHER")));
     configuration.setLazyLoadTriggerMethods(stringSetValueOf(props.getProperty("lazyLoadTriggerMethods"), "equals,clone,hashCode,toString"));

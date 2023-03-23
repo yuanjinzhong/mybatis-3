@@ -16,6 +16,7 @@
 package org.apache.ibatis.session;
 
 /**
+ * 用于分页的，详细看pageHelper分页插件的代码实现，看backEnd项目里面
  * @author Clinton Begin
  */
 public class RowBounds {
