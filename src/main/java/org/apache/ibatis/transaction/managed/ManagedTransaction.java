@@ -25,6 +25,8 @@ import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
+ * 让容器管理事务的整个生命周期。也就是本身不管理事务, 事务最重要的两个操作(rollback和 commit)，在本类中不做任何处理
+ *
  * {@link Transaction} that lets the container manage the full lifecycle of the transaction.
  * Delays connection retrieval until getConnection() is called.
  * Ignores all commit or rollback requests.
@@ -62,11 +64,22 @@ public class ManagedTransaction implements Transaction {
     return this.connection;
   }
 
+
+  //事务最重要的两个操作，在本类中不做任何处理
+
+  /**
+   * 不管理事务的生命周期
+   * @throws SQLException
+   */
   @Override
   public void commit() throws SQLException {
     // Does nothing
   }
 
+  /**
+   * 不管理事务的生命周期
+   * @throws SQLException
+   */
   @Override
   public void rollback() throws SQLException {
     // Does nothing

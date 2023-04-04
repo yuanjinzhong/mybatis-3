@@ -126,6 +126,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
   }
 
   private TransactionFactory getTransactionFactoryFromEnvironment(Environment environment) {
+    // default  ManagedTransactionFactory
     if (environment == null || environment.getTransactionFactory() == null) {
       return new ManagedTransactionFactory();
     }

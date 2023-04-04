@@ -31,6 +31,7 @@ public class StatementUtil {
   }
 
   /**
+   *  将事务超时时间设置到statement中的查询超时时间
    * Apply a transaction timeout.
    * <p>
    * Update a query timeout to apply a transaction timeout.

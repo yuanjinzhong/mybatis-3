@@ -32,6 +32,7 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
 /**
+ * 池化数据源,也是委托UnpooledDataSource来处理的，因为UnpooledDataSource里面会通过DriverManager.getConnection获取物理连接
  * This is a simple, synchronous, thread-safe database connection pool.
  *
  * @author Clinton Begin
@@ -40,7 +41,7 @@ public class PooledDataSource implements DataSource {
 
   private static final Log log = LogFactory.getLog(PooledDataSource.class);
   /**
-   * 池化数据源和PoolState对象绑定, 真正的数据库链接维护在这里
+   * 池化数据源和PoolState对象绑定, 真正的数据库链接维护在这里,池化连接池数据中心
    */
   private final PoolState state = new PoolState(this);
 
@@ -439,7 +440,7 @@ public class PooledDataSource implements DataSource {
            */
           if (state.activeConnections.size() < poolMaximumActiveConnections) {
             // Can create new connection
-            conn = new PooledConnection(dataSource.getConnection(), this);
+            conn = new PooledConnection(dataSource.getConnection(), this);//dataSource.getConnection()还是通过UnpolledDataSource获取物理链接
             if (log.isDebugEnabled()) {
               log.debug("Created connection " + conn.getRealHashCode() + ".");
             }
@@ -452,9 +453,11 @@ public class PooledDataSource implements DataSource {
               state.claimedOverdueConnectionCount++;
               state.accumulatedCheckoutTimeOfOverdueConnections += longestCheckoutTime;
               state.accumulatedCheckoutTime += longestCheckoutTime;
+              //最老的一个链接存活时间（checkOut时间）大于最大的存活时间，则删除这个最老的链接
               state.activeConnections.remove(oldestActiveConnection);
               if (!oldestActiveConnection.getRealConnection().getAutoCommit()) {
                 try {
+                  //删除最老的链接，并且回滚链接上的操作
                   oldestActiveConnection.getRealConnection().rollback();
                 } catch (SQLException e) {
                   /*
@@ -468,9 +471,11 @@ public class PooledDataSource implements DataSource {
                   log.debug("Bad connection. Could not roll back");
                 }
               }
+              //删除了一个最老的链接，创建一个新的链接
               conn = new PooledConnection(oldestActiveConnection.getRealConnection(), this);
               conn.setCreatedTimestamp(oldestActiveConnection.getCreatedTimestamp());
               conn.setLastUsedTimestamp(oldestActiveConnection.getLastUsedTimestamp());
+              //设置不可用，该对象等待GC
               oldestActiveConnection.invalidate();
               if (log.isDebugEnabled()) {
                 log.debug("Claimed overdue connection " + conn.getRealHashCode() + ".");

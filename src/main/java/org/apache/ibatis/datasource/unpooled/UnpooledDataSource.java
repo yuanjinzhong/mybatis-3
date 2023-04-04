@@ -32,7 +32,7 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.io.Resources;
 
-/** 此乃真的线程池，获取链接是从这里发生的
+/**  之所以称之为Unpooled, 是因为每次获取连接都是直接调用DriverManager.getConnection,来获取物理连接，没有任何缓存动作
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -42,14 +42,14 @@ public class UnpooledDataSource implements DataSource {
   private Properties driverProperties;
   private static Map<String, Driver> registeredDrivers = new ConcurrentHashMap<>();
 
-  private String driver;
+  private String driver; //构造UnpooledDataSource时传入的新的驱动，动态注入DriverManager中
   private String url;
   private String username;
   private String password;
 
-  private Boolean autoCommit;
-  private Integer defaultTransactionIsolationLevel;
-  private Integer defaultNetworkTimeout;
+  private Boolean autoCommit; //自动提交
+  private Integer defaultTransactionIsolationLevel; //隔离级别
+  private Integer defaultNetworkTimeout; //超时时间
 
   static {
     //从CopyOnWriteArrayList<DriverInfo> registeredDrivers = new CopyOnWriteArrayList<>(); 这个集合里面取驱动,
@@ -106,6 +106,12 @@ public class UnpooledDataSource implements DataSource {
     this.url = url;
     this.driverProperties = driverProperties;
   }
+
+  /**
+   * 之所以叫做UnpolledConnection， 是因为每次获取连接都是直接调用DriverManager.getConnection,来获取物理连接，没有任何缓存动作
+   * @return
+   * @throws SQLException
+   */
 
   @Override
   public Connection getConnection() throws SQLException {
@@ -234,21 +240,25 @@ public class UnpooledDataSource implements DataSource {
   }
 
   /**
-   * Mybatis的方法，调用java.sql包里的 {@link DriverManager#getConnection } 获取连接
+   * Mybatis的方法，调用java.sql包里的 {@link DriverManager#getConnection } 获取物理连接，这玩意是真实的连接
    * @param properties
    * @return
    * @throws SQLException
    */
   private Connection doGetConnection(Properties properties) throws SQLException {
+    //动态加载驱动
     initializeDriver();
     //C:/Program Files/Java/jdk1.8.0_181/src.zip!/java/sql/DriverManager.java:639 获取调用者的Application ClassLoader 来加载 mysql的驱动,
     //不然drivermannager的classLoader 是没法加载 mysql的驱动( 父classloader是没法加载子classloader的类的)
+    //这是获取物理连接，mybatis中的各种连接操作，都是操作这个物理连接
     Connection connection = DriverManager.getConnection(url, properties);
+    //设置超时，事务隔离级别，自动提交等
     configureConnection(connection);
     return connection;
   }
 
   /**
+   * 动态注册驱动，在spi机制下，系统中驱动都会通过DriverManager的静态方法加载进去，这个方法可以动态加载驱动
    *将系统中的驱动注入到这个DriverManager#registeredDrivers里面，交给DriverManager管理
    */
   private synchronized void initializeDriver() throws SQLException {

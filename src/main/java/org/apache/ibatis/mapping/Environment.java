@@ -20,6 +20,23 @@ import javax.sql.DataSource;
 import org.apache.ibatis.transaction.TransactionFactory;
 
 /**
+ * 对xml配置文件environment的抽象
+ *
+ * <configuration>
+ *
+ * 	<environments default="development">
+ * 		<environment id="development">
+ * 			<transactionManager type="JDBC"></transactionManager>
+ * 			<dataSource type="UNPOOLED">
+ * 				<property name="driver" value="org.hsqldb.jdbcDriver" />
+ * 				<property name="url" value="jdbc:hsqldb:mem:arrayrtypehandler" />
+ * 				<property name="username" value="sa" />
+ * 			</dataSource>
+ * 		</environment>
+ * 	</environments>
+ *
+ *
+ *
  * @author Clinton Begin
  */
 public final class Environment {

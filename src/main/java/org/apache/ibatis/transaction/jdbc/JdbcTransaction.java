@@ -26,6 +26,8 @@ import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionException;
 
 /**
+ *  直接使用jdbc api 的能力抽象事务，也就是直接依赖厂商的实现
+ *
  * {@link Transaction} that makes use of the JDBC commit and rollback facilities directly.
  * It relies on the connection retrieved from the dataSource to manage the scope of the transaction.
  * Delays connection retrieval until getConnection() is called.
@@ -39,9 +41,21 @@ public class JdbcTransaction implements Transaction {
 
   private static final Log log = LogFactory.getLog(JdbcTransaction.class);
 
+  // 这三个字段是传递进来的
+
+  /**
+   * 数据库连接， jdbc规范，厂商实现
+   */
   protected Connection connection;
+  /**
+   * 数据源，具体 厂商实现
+   */
   protected DataSource dataSource;
+  /**
+   * 事务隔离级别
+   */
   protected TransactionIsolationLevel level;
+
   protected boolean autoCommit;
 
   public JdbcTransaction(DataSource ds, TransactionIsolationLevel desiredLevel, boolean desiredAutoCommit) {
@@ -91,7 +105,11 @@ public class JdbcTransaction implements Transaction {
     if (connection != null) {
       /**
        * 既然关闭链接为什么还需要设置链接autocommit？
-       * 因为connection对应可能是个代理对象,既然是代理对象connection.close();就不一定是真的关闭链接 ,可能是池化链接，参考PooledConnection
+       * 因为connection对应可能是个代理对象,既然是代理对象connection.close();就不一定是真的关闭链接 ,可能是池化链接（后续继续使用），参考PooledConnection
+       *
+       *  方法：resetAutoCommit 内部注释说的很明确
+       *
+       *  有的数据库在关闭数据库连接的时候会提交或者回滚，那么需要将连接设置成自动提交不然数据库操作会失败
        */
       resetAutoCommit();
       if (log.isDebugEnabled()) {
@@ -123,7 +141,7 @@ public class JdbcTransaction implements Transaction {
       if (!connection.getAutoCommit()) {
         // MyBatis does not call commit/rollback on a connection if just selects were performed.
         // Some databases start transactions with select statements
-        // and they mandate a commit/rollback before closing the connection.
+        // and they mandate（授权） a commit/rollback before closing the connection.
         // A workaround is setting the autocommit to true before closing the connection.
         // Sybase throws an exception here.
         if (log.isDebugEnabled()) {

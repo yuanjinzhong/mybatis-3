@@ -23,7 +23,7 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.reflection.ExceptionUtil;
 
-/** 数据源链接对象
+/** 池化数据源中池化连接对象，close时候不是真正的close
  * @author Clinton Begin
  */
 class PooledConnection implements InvocationHandler {
