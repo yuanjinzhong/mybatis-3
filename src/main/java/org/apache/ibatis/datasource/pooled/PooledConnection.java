@@ -244,7 +244,7 @@ class PooledConnection implements InvocationHandler {
     String methodName = method.getName();
     //当调用close方法时不是真正的关闭,而是进行池化
     if (CLOSE.hashCode() == methodName.hashCode() && CLOSE.equals(methodName)) {
-      // 这个this 是指caller, 即ConnectionProxy
+      // 这个this 是指当前的 PooledConnection 对象
       dataSource.pushConnection(this);
       return null;
     }

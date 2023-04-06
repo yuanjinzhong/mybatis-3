@@ -87,9 +87,15 @@ public class PooledDataSource implements DataSource {
     expectedConnectionTypeCode = assembleConnectionTypeCode(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
   }
 
+  /**
+   * 返回的是代理connection
+   * @return
+   * @throws SQLException
+   */
   @Override
   public Connection getConnection() throws SQLException {
-    return popConnection(dataSource.getUsername(), dataSource.getPassword()).getProxyConnection();
+    return popConnection(dataSource.getUsername(), dataSource.getPassword())
+                                                            .getProxyConnection(); //返回的是代理connection
   }
 
   @Override

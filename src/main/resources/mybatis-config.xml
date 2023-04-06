@@ -29,7 +29,7 @@
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
+            <dataSource type="POOLED"> <!--池化数据库连接池-->
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:23306/study?autoReconnect=true"/>
                 <property name="username" value="root"/>
