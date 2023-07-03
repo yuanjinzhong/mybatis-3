@@ -19,6 +19,10 @@ import org.apache.ibatis.cursor.Cursor;
 
 public interface Mapper {
 
+  /**
+   * 流式查询，避免一次查询大量数据到Jvm内存，导致oom
+   * @return
+   */
   Cursor<User> getAllUsers();
 
 }
