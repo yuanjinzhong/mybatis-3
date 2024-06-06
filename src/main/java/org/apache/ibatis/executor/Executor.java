@@ -29,6 +29,9 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Clinton Begin
+ *
+ * sqlSession的所有抽象操作委托给Executor执行
+ *
  */
 public interface Executor {
 

@@ -379,9 +379,11 @@ public class SqlSessionManager implements SqlSessionFactory, SqlSession { //可�
         try (SqlSession autoSqlSession = openSession()) {
           try {
             final Object result = method.invoke(autoSqlSession, args);
+            // 这边其实是事物管理
             autoSqlSession.commit();
             return result;
           } catch (Throwable t) {
+            // 这边其实是事物管理
             autoSqlSession.rollback();
             throw ExceptionUtil.unwrapThrowable(t);
           }

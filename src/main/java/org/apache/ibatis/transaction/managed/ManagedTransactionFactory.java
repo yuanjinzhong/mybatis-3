@@ -52,6 +52,11 @@ public class ManagedTransactionFactory implements TransactionFactory {
 
   @Override
   public Transaction newTransaction(DataSource ds, TransactionIsolationLevel level, boolean autoCommit) {
+    /**
+     * 静默地忽略自动提交和隔离级别，就像完全忽略托管事务一样
+     * 由外部管理者控制的。它被默默地忽略了，所以
+     * 代码在托管和非托管配置之间保持可移植性。
+     */
     // Silently ignores autocommit and isolation level, as managed transactions are entirely
     // controlled by an external manager.  It's silently ignored so that
     // code remains portable between managed and unmanaged configurations.
